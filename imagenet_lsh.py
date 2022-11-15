@@ -143,7 +143,8 @@ def main():
     LOG = logging.getLogger('main')
     FileHandler = logging.FileHandler(os.path.join(log_folder, 'log.txt'))
     LOG.addHandler(FileHandler)
-
+    ConsoleHandler = logging.StreamHandler()
+    LOG.addHandler(ConsoleHandler)
     LOG.info("=> inited log")
     LOG.info("=> use gpus: {}".format(args.gpus))
 
