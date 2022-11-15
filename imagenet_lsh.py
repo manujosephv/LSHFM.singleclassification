@@ -597,7 +597,8 @@ def adjust_learning_rate(optimizer, epoch, args, iteration, num_iter):
 #             res.append(correct_k.mul_(100.0 / batch_size))
 #         return res
 
-def accuracy(output: torch.Tensor, target: torch.Tensor, topk=(1,)) -> List[torch.FloatTensor]:
+# def accuracy(output: torch.Tensor, target: torch.Tensor, topk=(1,)) -> List[torch.FloatTensor]:
+def accuracy(output, target, topk=(1,)):
     """
     Computes the accuracy over the k top predictions for the specified values of k
     In top-5 accuracy you give yourself credit for having the right answer
