@@ -7,6 +7,7 @@ import warnings
 import logging
 from datetime import datetime
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -324,7 +325,7 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
         time1 = time.time()
         train_acc, train_loss = train(train_loader, model_s, model_t, criterion_list, optimizer, epoch, args)
         LOG.info('epoch {}, total time {:.2f}'.format(epoch, time.time() - time1))
-        if torch.isnan(train_loss):
+        if np.isnan(train_loss):
             LOG.info('NaN loss. Stopping Training....')
             break
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
