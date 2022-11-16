@@ -322,7 +322,9 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
         time1 = time.time()
         train_acc, train_loss = train(train_loader, model_s, model_t, criterion_list, optimizer, epoch, args)
         LOG.info('epoch {}, total time {:.2f}'.format(epoch, time.time() - time1))
-
+        if torch.isna(train_loss):
+            LOG.info('NaN loss. Stopping Training....')
+            break
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
                 and args.rank % ngpus_per_node == 0):
             tb_logger.add_scalar('train_acc', train_acc, epoch)
@@ -332,7 +334,6 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
         test_acc, tect_acc_top5, test_loss = validate(val_loader, model_s, criterion, args)
         LOG.info(' * TEST {} Acc@1 {top1:.3f} Acc@5 {top5:.3f}'
               .format(epoch, top1=test_acc, top5=tect_acc_top5))
-
         if epoch+1 > args.epochs - 10:
             if avg_state_dict is not None:
                 state_dict = model_s.state_dict()
