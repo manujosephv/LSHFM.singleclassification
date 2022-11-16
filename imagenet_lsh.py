@@ -302,6 +302,7 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
             optimizer.load_state_dict(checkpoint['optimizer'])
             LOG.info("=> loaded checkpoint '{}' (epoch {})"
                   .format(args.resume, checkpoint['epoch']))
+            avg_state_dict = model_s.state_dict()
         else:
             LOG.info("=> no checkpoint found at '{}'".format(args.resume))
 
@@ -311,7 +312,8 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
         validate(val_loader, model_s, criterion, args)
         return
 
-    avg_state_dict = None
+    
+    _dict = None
     LOG.info("=> begin training")
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
