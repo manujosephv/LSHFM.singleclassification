@@ -322,7 +322,7 @@ def main_worker(gpu, ngpus_per_node, args, tb_logger, LOG):
         time1 = time.time()
         train_acc, train_loss = train(train_loader, model_s, model_t, criterion_list, optimizer, epoch, args)
         LOG.info('epoch {}, total time {:.2f}'.format(epoch, time.time() - time1))
-        if torch.isna(train_loss):
+        if torch.isnan(train_loss):
             LOG.info('NaN loss. Stopping Training....')
             break
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
